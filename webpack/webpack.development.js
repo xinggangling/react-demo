@@ -1,17 +1,24 @@
+
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const baseWebpackConfig = require('./webpack.base.js');
-const host = 'localhost';
+const host = '172.16.0.122';
 const port = '3000';
 
 module.exports = merge(baseWebpackConfig, {
+  entry: [
+    "@babel/polyfill",
+    './src/index.js',
+  ],
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
-    publicPath: 'http://' + host + ':' + port + '/assets/'
+    publicPath: 'http://' + host + ':' + port + '/assets/',
+    globalObject: 'this',
   },
   resolve: {
     alias: {
@@ -58,6 +65,20 @@ module.exports = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../src/assets/model'),
+        to: 'model',
+        publicPath: 'http://' + host + ':' + port + '/assets/',
+      }
+    ]),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../src/assets/js/'),
+        to: 'js',
+        publicPath: 'http://' + host + ':' + port + '/assets/',
+      }
+    ]),
     new HtmlWebpackPlugin({
       minify: {
         removeComments: true,

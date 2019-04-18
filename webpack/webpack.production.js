@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const StringReplacePlugin = require("string-replace-webpack-plugin");
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -23,6 +25,10 @@ const minutes = now.getMinutes().toString().length == 2 ? now.getMinutes() : '0'
 const nowString = year + month + day + hour + minutes;
 
 module.exports = merge(baseWebpackConfig, {
+  entry: [
+    "@babel/polyfill",
+    './src/index.js',
+  ],
   mode: 'production',
 	output: {
     path: path.resolve(__dirname, '../dist'),
@@ -64,6 +70,18 @@ module.exports = merge(baseWebpackConfig, {
       // apiPort: apiPort,
       // protocol: protocol
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../src/assets/model'),
+        to: path.resolve(__dirname, '../dist/assets/model/'),
+      }
+    ]),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: path.resolve(__dirname, '../src/assets/js'),
+    //     to: path.resolve(__dirname, '../dist/'),
+    //   }
+    // ]),
     // new HtmlWebpackIncludeAssetsPlugin({
     //   assets: ['vendor.dll.js'],
     //   files: ['index.html'],
@@ -116,5 +134,6 @@ module.exports = merge(baseWebpackConfig, {
       @reference: https://doc.webpack-china.org/plugins/module-concatenation-plugin/
     */
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new BundleAnalyzerPlugin(),
   ]
 })

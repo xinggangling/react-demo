@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>React-demo</title>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
 </head>
 <body>
     <div id="container"></div>
-    <script src="http://localhost:3000/assets/main.bundle.js"></script>
+    <script src="http://172.16.0.122:3000/assets/main.bundle.js"></script>
+    <!-- <script id="worker" type="app/worker">
+      console.log('navigator: ', navigator)
+      addEventListener('message', function (event) {
+        console.log('event: ', event)
+        postMessage('some message');
+      }, false);
+    </script> -->
 </body>
 </html>
